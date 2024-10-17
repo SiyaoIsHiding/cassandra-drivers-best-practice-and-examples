@@ -1,0 +1,61 @@
+version: '3.8' 
+ 
+x-common-variables: &common-variables
+  CASSANDRA_SEEDS: "cassandra1:9043,cassandra2:9044"   
+  CASSANDRA_CLUSTER_NAME: MyTestCluster 
+  CASSANDRA_DC: DC1
+  CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch 
+
+networks: 
+  cassandra: 
+services: 
+  cassandra1:
+    image: cassandra:5.0 
+    container_name: cassandra1 
+    hostname: cassandra1
+    command: -Dcassandra.config=/cassandrayamlfiles/cassandra-1.yaml
+    networks: 
+      - cassandra 
+    ports: 
+      - "9043:9043" 
+    volumes:
+      - ./:/cassandrayamlfiles
+    environment: 
+      <<: *common-variables
+      CASSANDRA_RACK: RACK1
+ 
+  cassandra2: 
+    image: cassandra:5.0 
+    container_name: cassandra2 
+    hostname: cassandra2
+    command: -Dcassandra.config=/cassandrayamlfiles/cassandra-2.yaml
+    networks: 
+      - cassandra 
+    ports: 
+      - "9044:9044" 
+    volumes:
+      - ./:/cassandrayamlfiles
+    environment: 
+      <<: *common-variables
+      CASSANDRA_RACK: RACK2
+    depends_on: 
+      cassandra1:  
+        condition: service_started 
+ 
+  cassandra3: 
+    image: cassandra:5.0 
+    container_name: cassandra3 
+    hostname: cassandra3
+    command: -Dcassandra.config=/cassandrayamlfiles/cassandra-3.yaml
+    networks: 
+      - cassandra 
+    ports: 
+      - "9045:9045" 
+    volumes:
+      - ./:/cassandrayamlfiles
+    environment: 
+      <<: *common-variables
+      CASSANDRA_RACK: RACK3
+    depends_on: 
+      cassandra2:   
+        condition: service_started
