@@ -1,0 +1,38 @@
+<configuration>
+    <property name="pattern" value="%green(%d{HH:mm:ss.SSS}) [%yellow(%thread)] %highlight(%-5level) %cyan(%class{0}) - %msg%n" />
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${USER_HOME}/application.log</file>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <target>System.out</target>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+    </root>
+    <logger name="com.datastax.oss.driver.internal.core.session.PoolManager" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.datastax.oss.driver.internal.core.pool.ChannelPool" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.datastax.oss.driver.internal.core.metadata.NodeStateManager" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.datastax.oss.driver.internal.core.metadata.MetadataManager" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.datastax.oss.driver.internal.core.util.concurrent.Reconnection" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+</configuration>

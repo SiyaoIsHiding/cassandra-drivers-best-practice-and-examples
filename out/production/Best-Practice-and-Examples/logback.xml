@@ -1,0 +1,22 @@
+<configuration>
+    <property name="pattern" value="%green(%d{HH:mm:ss.SSS}) [%yellow(%thread)] %highlight(%-5level) %cyan(%class{0}) - %msg%n" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <target>System.out</target>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+    </root>
+    <logger name="com.datastax.oss.driver.internal.core.retry.DefaultRetryPolicy" level="trace" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.datastax.oss.driver.internal.core.cql.CqlRequestHandler" level="trace" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+</configuration>
