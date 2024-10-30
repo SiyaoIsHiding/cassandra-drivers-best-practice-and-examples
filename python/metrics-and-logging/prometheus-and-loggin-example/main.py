@@ -17,7 +17,7 @@ def config_logger():
 
 if __name__ == '__main__':
     config_logger()
-    cluster = Cluster(['127.0.0.1'], port=9043,
-                      load_balancing_policy=TokenAwarePolicy(DCAwareRoundRobinPolicy(local_dc='datecenter1')))
+    cluster = Cluster(['127.0.0.1'], port=9043, protocol_version=5,
+                      load_balancing_policy=TokenAwarePolicy(DCAwareRoundRobinPolicy(local_dc='datacenter1')))
     session = cluster.connect()
     rows = session.execute('SELECT * FROM system.local')
